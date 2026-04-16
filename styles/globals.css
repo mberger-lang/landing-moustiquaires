@@ -233,8 +233,8 @@ select {
 
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.06fr) minmax(420px, 0.94fr);
-  gap: 72px;
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 0.92fr);
+  gap: 56px;
   align-items: center;
 }
 
@@ -274,19 +274,19 @@ select {
 }
 
 .hero h1 {
-  margin: 0 0 26px;
-  max-width: 760px;
+  margin: 0 0 24px;
+  max-width: 700px;
   font-family: var(--font-display);
-  font-size: clamp(46px, 5.6vw, 78px);
-  line-height: 0.98;
+  font-size: clamp(36px, 4.6vw, 62px);
+  line-height: 1;
   font-weight: 800;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.03em;
   color: var(--navy);
 }
 
 .hero h1 span {
   display: inline-block;
-  margin-left: 8px;
+  margin-left: 4px;
   color: var(--orange);
 }
 
