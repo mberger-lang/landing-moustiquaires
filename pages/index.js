@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useState } from "react";
 
-const canonicalUrl = "https://moustiquaire-chambery.caseo-maison.com/";
+const canonicalUrl = "https://moustiquaire-chambery-caseo.vercel.app/";
 const showroomUrl =
   "https://www.caseo-maison.com/magasins/page/caseo-chambery-voglans-85/magasin-fenetre-chambery-caseo-71";
 const devisUrl = "https://www.caseo-maison.com/devis";
