@@ -86,9 +86,10 @@ select {
 .site-header {
   position: relative;
   z-index: 10;
-  background: #fafaf8;
-  border-bottom: 1px solid var(--border);
+  background: var(--navy);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
+
 
 .header-inner {
   min-height: 86px;
@@ -106,11 +107,12 @@ select {
 
 .logo-image-wrap {
   max-width: 190px;
-  padding: 10px 16px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #1a2340 0%, #2d3558 100%);
-  box-shadow: 0 12px 28px rgba(26, 35, 64, 0.16);
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
+
 
 .logo-image {
   width: 100%;
@@ -128,12 +130,13 @@ select {
   text-decoration: none;
   font-size: 15px;
   font-weight: 600;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .nav a:hover {
-  color: var(--navy);
+  color: white;
 }
+
 
 .nav a.nav-cta,
 .nav a.nav-cta:hover {
@@ -1437,9 +1440,10 @@ select {
   }
 
   .logo-image-wrap {
-    max-width: 180px;
-    padding: 8px 14px;
-  }
+  max-width: 180px;
+  padding: 0;
+}
+
 
   .hero-topline {
     gap: 10px;
