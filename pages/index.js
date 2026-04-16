@@ -1,798 +1,1260 @@
-import Head from "next/head";
-import { useState } from "react";
+@font-face {
+  font-family: "Gotham";
+  src: url("/fonts/Gotham-Book.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
-const canonicalUrl = "https://moustiquaire-chambery-caseo.vercel.app/";
-const showroomUrl =
-  "https://www.caseo-maison.com/magasins/page/caseo-chambery-voglans-85/magasin-fenetre-chambery-caseo-71";
-const devisUrl = "https://www.caseo-maison.com/devis";
-const mapsUrl = "https://maps.app.goo.gl/hsRmYYPDsB5QcNK98";
-const mapsEmbedUrl =
-  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2775923.340662299!2d1.4331651417110982!3d47.19970105736059!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x478ba7f4992eba1f%3A0x9ea3fb9aab31d495!2zQ0FTw4lPIENoYW1iw6lyeQ!5e0!3m2!1sfr!2sfr!4v1776328547399!5m2!1sfr!2sfr";
-const reviewsUrl =
-  "https://www.caseo-maison.com/avis-clients/magasins/avis-caseo-chambery-85";
+@font-face {
+  font-family: "Gotham";
+  src: url("/fonts/Gotham-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
 
-const phoneDisplay = "04 79 34 48 52";
-const phoneLink = "tel:+33479344852";
+@font-face {
+  font-family: "Gotham";
+  src: url("/fonts/Gotham-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
-const openingHours = [
-  { day: "Lundi", hours: "08h00-12h00 / 13h30-18h00" },
-  { day: "Mardi", hours: "08h00-12h00 / 13h30-18h00" },
-  { day: "Mercredi", hours: "08h00-12h00 / 13h30-18h00" },
-  { day: "Jeudi", hours: "08h00-12h00 / 13h30-18h00" },
-  { day: "Vendredi", hours: "08h00-12h00 / 13h30-18h00" },
-  { day: "Samedi", hours: "09h00-13h00" },
-  { day: "Dimanche", hours: "Fermé" },
-];
+@font-face {
+  font-family: "Gotham";
+  src: url("/fonts/Gotham-Black.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
 
-const zones = [
-  "Chambéry",
-  "Voglans",
-  "La Motte-Servolex",
-  "Bassens",
-  "Cognin",
-  "Barberaz",
-  "Aix-les-Bains",
-  "Le Bourget-du-Lac",
-];
+:root {
+  --orange: #f48221;
+  --orange-dark: #d96e10;
+  --orange-light: #fff4eb;
+  --navy: #1a2340;
+  --navy-soft: #2d3558;
+  --text: #1a2340;
+  --muted: #5a6a85;
+  --border: #e4e8f0;
+  --bg: #fafaf8;
+  --white: #ffffff;
+  --font-display: "Gotham", "Avenir Next", "Segoe UI", sans-serif;
+  --font-body: "Gotham", "Avenir Next", "Segoe UI", sans-serif;
+}
 
-const solutions = [
-  {
-    num: "01",
-    title: "Moustiquaire enroulable",
-    desc: "La solution la plus demandée pour les fenêtres. Facile à ouvrir, discrète une fois relevée, durable au quotidien.",
-    ideal: "Idéale pour chambre, cuisine, salle de bain et fenêtres fréquemment ouvertes",
-  },
-  {
-    num: "02",
-    title: "Moustiquaire plissée",
-    desc: "Parfaite pour les portes-fenêtres et baies vitrées. Ouverture latérale souple, faible encombrement et excellent confort d’usage.",
-    ideal: "Idéale pour terrasse, jardin, balcon et grandes ouvertures",
-  },
-  {
-    num: "03",
-    title: "Moustiquaire fixe",
-    desc: "Une solution simple, propre et durable pour les ouvertures peu sollicitées. Protection permanente sans manipulation.",
-    ideal: "Idéale pour cave, véranda, cellier et fenêtres peu utilisées",
-  },
-];
+* {
+  box-sizing: border-box;
+}
 
-const reasons = [
-  {
-    number: "01",
-    title: "Showroom local à Chambéry",
-    text: "Vous pouvez voir les modèles, comparer les finitions et échanger avec une équipe proche de chez vous.",
-  },
-  {
-    number: "02",
-    title: "Prise de mesures à domicile",
-    text: "Nous prenons les mesures sur place pour vous orienter vers la moustiquaire la plus adaptée à vos ouvertures.",
-  },
-  {
-    number: "03",
-    title: "Fabrication sur mesure",
-    text: "Chaque moustiquaire est fabriquée selon vos cotes pour un rendu net, précis et fiable dans le temps.",
-  },
-  {
-    number: "04",
-    title: "Pose soignée par nos techniciens",
-    text: "Installation propre, réglages, vérifications et conseils d’utilisation : vous repartez avec une solution prête à l’emploi.",
-  },
-];
+html {
+  scroll-behavior: smooth;
+}
 
-const painPoints = [
-  "Vous n’ouvrez plus les fenêtres à cause des moustiques",
-  "Les solutions temporaires tiennent mal ou sont peu esthétiques",
-  "Vous voulez garder l’air frais sans laisser entrer les insectes",
-  "Vous cherchez une solution durable, propre et adaptée à vos menuiseries",
-];
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+}
 
-const benefits = [
-  "Confort d’été sans moustiques ni insectes",
-  "Aération naturelle de votre logement",
-  "Solution discrète et esthétique",
-  "Compatible avec fenêtres, portes-fenêtres et baies vitrées",
-  "Fabrication sur mesure",
-  "Pose professionnelle à Chambéry et alentours",
-];
+a {
+  color: inherit;
+}
 
-const reviews = [
-  {
-    name: "karine routin",
-    rating: "5/5",
-    date: "4 novembre 2025",
-    text: "Très professionnel",
-  },
-  {
-    name: "PATRICIA RENAUD",
-    rating: "5/5",
-    date: "6 juin 2025",
-    text: "Je suis tout à fait satisfaite. Jean-Claude a été efficace, fiable et très agréable.",
-  },
-  {
-    name: "Verdoia Jean Daniel",
-    rating: "5/5",
-    date: "20 février 2024",
-    text: "Très bon rapport qualité prix, le service est excellent et les matériaux de bonne qualités. Je recommande les yeux fermés car je suis satisfait du résultat.",
-  },
-];
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
 
-const faqs = [
-  {
-    question: "Quel type de moustiquaire choisir pour ma fenêtre à Chambéry ?",
-    answer:
-      "Pour une fenêtre standard, la moustiquaire enroulable est souvent le meilleur choix. Pour une porte-fenêtre ou une baie vitrée, la moustiquaire plissée est généralement la plus confortable à l’usage.",
-  },
-  {
-    question: "Proposez-vous la pose de moustiquaire à Chambéry et autour ?",
-    answer:
-      "Oui. Caséo Chambéry intervient pour la prise de mesures, la fabrication sur mesure et la pose de moustiquaires à Chambéry ainsi que dans les communes voisines.",
-  },
-  {
-    question: "Faut-il forcément une moustiquaire sur mesure ?",
-    answer:
-      "Pour obtenir une finition propre, une bonne tenue dans le temps et un usage confortable, le sur mesure est généralement la meilleure solution, surtout pour les portes-fenêtres et baies vitrées.",
-  },
-  {
-    question: "Combien coûte une moustiquaire sur mesure ?",
-    answer:
-      "Le prix dépend du type de moustiquaire, des dimensions, du nombre d’ouvertures et du niveau de finition souhaité. Le plus simple est de demander un devis gratuit pour obtenir un chiffrage adapté à votre projet.",
-  },
-  {
-    question: "Comment se passe la prise de mesures ?",
-    answer:
-      "Après votre demande, l’équipe Caséo Chambéry vous recontacte pour qualifier votre besoin. Un technicien peut ensuite se déplacer chez vous pour mesurer précisément vos ouvertures avant fabrication.",
-  },
-  {
-    question: "Quels sont les horaires du showroom Caséo Chambéry ?",
-    answer:
-      "Le showroom est ouvert du lundi au vendredi de 08h00 à 12h00 puis de 13h30 à 18h00, et le samedi de 09h00 à 13h00.",
-  },
-];
+.container {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
 
-const localBusinessSchema = {
-  "@context": "https://schema.org",
-  "@type": "HomeAndConstructionBusiness",
-  name: "Caséo Chambéry - Menuiserie Diffusion",
-  image: canonicalUrl,
-  url: canonicalUrl,
-  telephone: "+33479344852",
-  description:
-    "Caséo Chambéry installe des moustiquaires sur mesure pour fenêtres, portes-fenêtres et baies vitrées à Chambéry et dans les communes alentours.",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "381 Avenue de Villarcher",
-    postalCode: "73000",
-    addressLocality: "Chambéry",
-    addressCountry: "FR",
-  },
-  areaServed: zones.map((city) => ({ "@type": "City", name: city })),
-  openingHoursSpecification: [
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: "08:00",
-      closes: "18:00",
-    },
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: "Saturday",
-      opens: "09:00",
-      closes: "13:00",
-    },
-  ],
-  parentOrganization: {
-    "@type": "Organization",
-    name: "Caséo",
-    url: "https://www.caseo-maison.com/",
-  },
-  sameAs: [showroomUrl, mapsUrl, reviewsUrl],
-};
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(250, 250, 248, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
 
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.answer,
-    },
-  })),
-};
+.header-inner {
+  min-height: 86px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
 
-export default function Home() {
-  const [openFaq, setOpenFaq] = useState(null);
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
 
-  return (
-    <>
-      <Head>
-        <title>
-          Moustiquaire sur mesure à Chambéry avec pose | Devis gratuit | Caséo
-          Chambéry
-        </title>
-        <meta
-          name="description"
-          content="Caséo Chambéry installe votre moustiquaire sur mesure à Chambéry : fenêtres, portes-fenêtres et baies vitrées. Devis gratuit, prise de mesures à domicile et pose professionnelle."
-        />
-        <meta
-          name="robots"
-          content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
-        />
-        <meta
-          property="og:title"
-          content="Moustiquaire sur mesure à Chambéry avec pose | Caséo Chambéry"
-        />
-        <meta
-          property="og:description"
-          content="Fenêtres, portes-fenêtres, baies vitrées : demandez votre devis gratuit pour une moustiquaire sur mesure à Chambéry."
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta name="theme-color" content="#f48221" />
-        <link rel="canonical" href={canonicalUrl} />
+.logo-badge {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--orange) 0%, #ff9a32 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  box-shadow: 0 18px 40px rgba(244, 130, 33, 0.25);
+}
 
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(localBusinessSchema),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(faqSchema),
-          }}
-        />
-      </Head>
+.logo-text strong {
+  display: block;
+  font-size: 18px;
+  line-height: 1.1;
+  color: var(--navy);
+  font-weight: 800;
+}
 
-      <header className="site-header">
-        <div className="container header-inner">
-          <a href="#top" className="logo">
-            <div className="logo-badge">C</div>
-            <div className="logo-text">
-              <strong>Caséo Chambéry</strong>
-              <span>Moustiquaires sur mesure</span>
-            </div>
-          </a>
+.logo-text span {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--muted);
+}
 
-          <nav className="nav">
-            <a href="#solutions">Solutions</a>
-            <a href="#pourquoi">Pourquoi Caséo</a>
-            <a href="#local">Magasin</a>
-            <a href="#faq">FAQ</a>
-            <a href={devisUrl} className="btn btn-primary nav-cta">
-              Recevoir mon devis gratuit
-            </a>
-          </nav>
-        </div>
-      </header>
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
 
-      <main>
-        <section className="hero" id="top">
-          <div className="container hero-grid">
-            <div className="hero-copy">
-              <div className="hero-topline">
-                <span className="hero-tag">Caséo Chambéry - Voglans</span>
-                <span className="hero-review-badge">⭐ 4,5/5 - 84 avis</span>
-              </div>
+.nav a {
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muted);
+}
 
-              <h1>
-                Moustiquaire sur mesure à Chambéry avec pose
-                <span> Devis gratuit</span>
-              </h1>
+.nav a:hover {
+  color: var(--navy);
+}
 
-              <p className="hero-text">
-                Fenêtres, portes-fenêtres, baies vitrées : protégez votre maison
-                des moustiques tout l’été sans renoncer à l’air frais. Caséo
-                Chambéry prend les mesures, fabrique et pose votre moustiquaire
-                sur mesure.
-              </p>
+.nav a.nav-cta,
+.nav a.nav-cta:hover {
+  color: white;
+}
 
-              <div className="hero-points">
-                <span>✔ Prise de mesures à domicile</span>
-                <span>✔ Fabrication sur vos cotes</span>
-                <span>✔ Pose par nos techniciens</span>
-              </div>
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease,
+    color 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+  text-align: center;
+}
 
-              <div className="hero-actions">
-                <a href={devisUrl} className="btn btn-primary">
-                  Recevoir mon devis gratuit
-                </a>
-                <a href={phoneLink} className="btn btn-secondary">
-                  Appeler le showroom
-                </a>
-              </div>
+.btn:hover {
+  transform: translateY(-1px);
+}
 
-              <div className="hero-stats">
-                <div className="stat-card">
-                  <strong>100%</strong>
-                  <span>sur mesure</span>
-                </div>
-                <div className="stat-card">
-                  <strong>Local</strong>
-                  <span>showroom à Chambéry</span>
-                </div>
-                <div className="stat-card">
-                  <strong>Pose pro</strong>
-                  <span>installation soignée</span>
-                </div>
-              </div>
-            </div>
+.btn-primary {
+  background: var(--orange);
+  color: white;
+  border: 1px solid var(--orange);
+  box-shadow: 0 16px 40px rgba(244, 130, 33, 0.24);
+}
 
-            <div className="hero-panel">
-              <div className="hero-panel-label">Votre showroom local</div>
-              <div className="hero-panel-title">
-                Un projet simple, clair et bien accompagné
-              </div>
-              <p className="hero-panel-text">
-                Venez voir les modèles au showroom Caséo Chambéry ou faites
-                directement votre demande en ligne pour être recontacté.
-              </p>
+.btn-primary:hover {
+  background: var(--orange-dark);
+  border-color: var(--orange-dark);
+  color: white;
+}
 
-              <div className="hero-panel-box">
-                <p>
-                  <strong>Menuiserie Diffusion</strong>
-                  <br />
-                  381 Avenue de Villarcher
-                  <br />
-                  73000 Chambéry
-                </p>
-                <a href={phoneLink}>{phoneDisplay}</a>
-              </div>
+.btn-secondary {
+  background: white;
+  color: var(--navy);
+  border: 1.5px solid var(--border);
+}
 
-              <div className="hero-panel-actions">
-                <a href={devisUrl} className="btn btn-primary">
-                  Demander un devis
-                </a>
-                <a href={mapsUrl} target="_blank" rel="noreferrer" className="btn btn-dark-outline">
-                  Voir l’itinéraire
-                </a>
-              </div>
+.btn-secondary:hover {
+  border-color: var(--navy);
+}
 
-              <div className="zone-pills">
-                {zones.map((z) => (
-                  <span key={z}>{z}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
+.btn-dark {
+  background: var(--navy);
+  color: white;
+  border: 1px solid var(--navy);
+}
 
-        <section className="trust-bar">
-          <div className="container trust-grid">
-            <div className="trust-item">
-              <div className="trust-number">01</div>
-              <div>
-                <strong>Prise de mesures à domicile</strong>
-                <span>Des conseils adaptés à votre logement</span>
-              </div>
-            </div>
-            <div className="trust-item">
-              <div className="trust-number">02</div>
-              <div>
-                <strong>Fabrication sur mesure</strong>
-                <span>Une moustiquaire adaptée à chaque ouverture</span>
-              </div>
-            </div>
-            <div className="trust-item">
-              <div className="trust-number">03</div>
-              <div>
-                <strong>Installation professionnelle</strong>
-                <span>Une pose propre et durable dans le temps</span>
-              </div>
-            </div>
-          </div>
-        </section>
+.btn-dark-outline {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
-        <section className="section section-soft">
-          <div className="container two-col-block">
-            <div>
-              <p className="section-tag">Le problème le plus fréquent</p>
-              <h2>Marre des moustiques dès que vous ouvrez les fenêtres ?</h2>
-              <p className="section-text">
-                En été, beaucoup de foyers n’osent plus aérer correctement leur
-                logement à cause des moustiques et autres insectes. Les
-                solutions temporaires sont souvent peu esthétiques, peu solides
-                et peu pratiques à utiliser au quotidien.
-              </p>
-            </div>
+.btn-dark-outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
 
-            <div className="pain-card">
-              {painPoints.map((item) => (
-                <div key={item} className="pain-row">
-                  <span>•</span>
-                  <p>{item}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+.btn-white {
+  background: white;
+  color: var(--navy);
+  border: 1px solid white;
+}
 
-        <section id="solutions" className="section">
-          <div className="container">
-            <p className="section-tag">Nos solutions</p>
-            <h2>Des moustiquaires adaptées à chaque ouverture</h2>
-            <p className="section-text">
-              Caséo Chambéry vous accompagne pour choisir la bonne solution
-              selon votre usage, le type d’ouverture et le niveau de confort
-              recherché.
-            </p>
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 72px 0 84px;
+  background:
+    radial-gradient(circle at 90% 14%, rgba(244, 130, 33, 0.1) 0%, transparent 26%),
+    linear-gradient(160deg, #fffaf4 0%, var(--bg) 58%);
+}
 
-            <div className="solutions-grid">
-              {solutions.map((s) => (
-                <article key={s.num} className="solution-card">
-                  <div className="solution-num">{s.num}</div>
-                  <h3>{s.title}</h3>
-                  <p>{s.desc}</p>
-                  <span>{s.ideal}</span>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: 56px;
+  align-items: center;
+}
 
-        <section className="section section-soft">
-          <div className="container">
-            <p className="section-tag">Les avantages</p>
-            <h2>Pourquoi installer une moustiquaire sur mesure à Chambéry ?</h2>
-            <p className="section-text">
-              Une moustiquaire bien choisie vous permet de profiter de l’air
-              frais sans subir les insectes, tout en gardant une intégration
-              propre et discrète à vos menuiseries.
-            </p>
+.hero-topline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
 
-            <div className="benefits-grid">
-              {benefits.map((benefit) => (
-                <div key={benefit} className="benefit-card">
-                  <span className="benefit-check">✔</span>
-                  <p>{benefit}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+.hero-tag,
+.hero-review-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+}
 
-        <section id="pourquoi" className="section">
-          <div className="container why-grid">
-            <div>
-              <p className="section-tag">Pourquoi choisir Caséo Chambéry</p>
-              <h2>Un showroom local, une équipe qui se déplace</h2>
-              <p className="section-text why-text">
-                Vous ne choisissez pas une moustiquaire standard achetée à la
-                va-vite. Vous bénéficiez d’un accompagnement local avec prise de
-                mesures, fabrication sur mesure et pose professionnelle.
-              </p>
+.hero-tag {
+  background: var(--orange-light);
+  color: var(--orange-dark);
+  border: 1px solid rgba(244, 130, 33, 0.22);
+}
 
-              <div className="why-feature">
-                <div className="why-feature-label">Preuve sociale</div>
-                <div className="why-feature-title">
-                  4,5/5 sur 84 avis pour Caséo Chambéry
-                </div>
-                <p>
-                  Les avis clients rassurent avant un devis. Ils montrent la
-                  qualité de l’accueil, du conseil, de la pose et du suivi du
-                  projet.
-                </p>
-              </div>
-            </div>
+.hero-review-badge {
+  background: white;
+  color: var(--navy);
+  border: 1px solid var(--border);
+}
 
-            <div className="reasons-grid">
-              {reasons.map((r) => (
-                <article key={r.title} className="reason-card">
-                  <div className="reason-number">{r.number}</div>
-                  <h3>{r.title}</h3>
-                  <p>{r.text}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
+.hero h1 {
+  margin: 0 0 22px;
+  max-width: 720px;
+  font-family: var(--font-display);
+  font-size: clamp(42px, 5vw, 74px);
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--navy);
+}
 
-        <section className="section">
-          <div className="container">
-            <p className="section-tag">Tarif & devis</p>
-            <h2>Le prix d’une moustiquaire dépend surtout de votre projet</h2>
-            <p className="section-text">
-              Le tarif varie selon le type de moustiquaire, les dimensions, le
-              nombre d’ouvertures, les contraintes de pose et la finition
-              choisie. Pour obtenir un prix juste, le plus efficace reste de
-              demander un devis gratuit auprès de Caséo Chambéry.
-            </p>
+.hero h1 span {
+  color: var(--orange);
+}
 
-            <div className="price-box">
-              <div>
-                <strong>Besoin d’un prix précis ?</strong>
-                <p>
-                  Recevez un devis gratuit selon vos dimensions, votre type
-                  d’ouverture et le niveau de finition souhaité.
-                </p>
-              </div>
-              <a href={devisUrl} className="btn btn-primary">
-                Demander mon devis gratuit
-              </a>
-            </div>
-          </div>
-        </section>
+.hero-text {
+  max-width: 660px;
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.72;
+  color: var(--muted);
+}
 
-        <section className="section section-soft">
-          <div className="container">
-            <p className="section-tag">Comment ça se passe</p>
-            <h2>De la demande à la pose, tout est cadré</h2>
+.hero-points {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 28px;
+  color: var(--navy);
+  font-size: 15px;
+  font-weight: 500;
+}
 
-            <div className="process-grid">
-              {[
-                {
-                  n: "1",
-                  title: "Vous nous contactez",
-                  desc: "Par téléphone ou via la demande de devis. L’équipe qualifie votre besoin et vous oriente.",
-                },
-                {
-                  n: "2",
-                  title: "Prise de mesures à domicile",
-                  desc: "Un technicien se déplace pour mesurer précisément vos ouvertures et vous conseiller.",
-                },
-                {
-                  n: "3",
-                  title: "Fabrication sur mesure",
-                  desc: "Votre moustiquaire est réalisée selon vos dimensions exactes et votre configuration.",
-                },
-                {
-                  n: "4",
-                  title: "Pose et réglages",
-                  desc: "Nous installons la moustiquaire et nous vérifions son bon fonctionnement avant la fin de l’intervention.",
-                },
-              ].map((s) => (
-                <article key={s.n} className="process-step">
-                  <div className="process-circle">{s.n}</div>
-                  <h3>{s.title}</h3>
-                  <p>{s.desc}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
+.hero-points span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
 
-        <section className="section section-reviews">
-          <div className="container">
-            <p className="section-tag">Avis clients</p>
-            <h2>Des retours visibles en ligne pour vous rassurer</h2>
-            <p className="section-text">
-              Caséo Chambéry affiche une note de 4,5/5 sur 84 avis. Voici
-              quelques retours publics consultables en ligne.
-            </p>
+.hero-points span::before {
+  content: "✓";
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--orange-light);
+  color: var(--orange-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
 
-            <div className="reviews-header">
-              <div className="reviews-badge">
-                <strong>4,5/5 - 84 avis</strong>
-                <span>Caséo Chambéry</span>
-              </div>
-              <a
-                href={reviewsUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="btn btn-secondary"
-              >
-                Voir tous les avis
-              </a>
-            </div>
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 32px;
+}
 
-            <div className="reviews-grid">
-              {reviews.map((review) => (
-                <article
-                  key={`${review.name}-${review.date}`}
-                  className="review-card"
-                >
-                  <div className="review-top">
-                    <strong>{review.name}</strong>
-                    <span>{review.rating}</span>
-                  </div>
-                  <p className="review-date">{review.date}</p>
-                  <p className="review-text">“{review.text}”</p>
-                  <a
-                    href={reviewsUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="review-link"
-                  >
-                    Consulter la source
-                  </a>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 36px;
+}
 
-        <section id="zones" className="section section-dark">
-          <div className="container">
-            <p className="section-tag dark-tag">Zone d’intervention</p>
-            <h2>Pose de moustiquaire à Chambéry et dans les environs</h2>
-            <p className="section-text dark-text">
-              Caséo Chambéry intervient pour la moustiquaire sur mesure à
-              Chambéry, Voglans, La Motte-Servolex, Bassens, Cognin, Barberaz,
-              Aix-les-Bains et Le Bourget-du-Lac.
-            </p>
+.stat-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 22px 20px;
+  min-height: 120px;
+}
 
-            <div className="zones-grid">
-              {zones.map((z, i) => (
-                <span key={z} className={i === 0 ? "zone-main" : ""}>
-                  {z}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
+.stat-card strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.04;
+  color: var(--navy);
+  font-weight: 800;
+}
 
-        <section id="local" className="section">
-          <div className="container">
-            <p className="section-tag">Magasin & horaires</p>
-            <h2>Retrouvez Caséo Chambéry au showroom</h2>
-            <p className="section-text">
-              Tous les accès utiles sont ici : téléphone, demande de devis,
-              carte du magasin et horaires du showroom.
-            </p>
+.stat-card span {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--muted);
+}
 
-            <div className="local-grid">
-              <div className="map-card">
-                <iframe
-                  src={mapsEmbedUrl}
-                  className="map-frame"
-                  allowFullScreen=""
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Carte Caséo Chambéry"
-                />
-                <div className="map-actions">
-                  <a
-                    href={mapsUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="btn btn-primary"
-                  >
-                    Voir l’itinéraire
-                  </a>
-                  <a href={devisUrl} className="btn btn-secondary">
-                    Faire une demande de devis
-                  </a>
-                </div>
-              </div>
+.hero-panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 30px;
+  background: var(--navy);
+  color: white;
+  padding: 34px;
+  box-shadow: 0 32px 70px rgba(26, 35, 64, 0.2);
+}
 
-              <div className="hours-card">
-                <div className="hours-head">
-                  <p className="section-tag small-tag">Horaires showroom</p>
-                  <h3>Caséo Chambéry</h3>
-                  <p>
-                    Menuiserie Diffusion
-                    <br />
-                    381 Avenue de Villarcher
-                    <br />
-                    73000 Chambéry
-                  </p>
-                </div>
+.hero-panel::after {
+  content: "";
+  position: absolute;
+  right: -70px;
+  bottom: -70px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: rgba(244, 130, 33, 0.12);
+}
 
-                <div className="hours-list">
-                  {openingHours.map((item) => (
-                    <div className="hours-row" key={item.day}>
-                      <strong>{item.day}</strong>
-                      <span>{item.hours}</span>
-                    </div>
-                  ))}
-                </div>
+.hero-panel-label,
+.hero-panel-title,
+.hero-panel-text,
+.hero-panel-box,
+.hero-panel-actions,
+.zone-pills {
+  position: relative;
+  z-index: 1;
+}
 
-                <div className="hours-actions">
-                  <a href={phoneLink} className="btn btn-dark">
-                    Appeler le {phoneDisplay}
-                  </a>
-                  <a href={devisUrl} className="btn btn-primary">
-                    Recevoir mon devis gratuit
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+.hero-panel-label {
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  font-weight: 700;
+}
 
-        <section className="section">
-          <div className="container seo-block">
-            <p className="section-tag">Moustiquaire Chambéry</p>
-            <h2>
-              Installation de moustiquaire sur mesure pour fenêtre, porte-fenêtre
-              et baie vitrée
-            </h2>
-            <p className="section-text">
-              Si vous recherchez une moustiquaire à Chambéry, une pose de
-              moustiquaire à Chambéry ou une installation de moustiquaire sur
-              mesure pour votre maison, Caséo Chambéry vous accompagne de la
-              prise de mesures à la pose finale. Nous proposons des solutions
-              adaptées aux fenêtres, portes-fenêtres et baies vitrées, avec une
-              approche locale, un showroom accessible et une fabrication sur
-              mesure. Cette page a été conçue pour répondre aux besoins des
-              habitants de Chambéry et des communes voisines qui souhaitent
-              aérer leur logement sans laisser entrer les moustiques ni les
-              insectes.
-            </p>
-          </div>
-        </section>
+.hero-panel-title {
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 1.05;
+  font-weight: 800;
+}
 
-        <section id="faq" className="section">
-          <div className="container">
-            <p className="section-tag">FAQ moustiquaire Chambéry</p>
-            <h2>Les questions fréquentes</h2>
+.hero-panel-text {
+  margin-top: 18px;
+  font-size: 16px;
+  line-height: 1.72;
+  color: rgba(255, 255, 255, 0.78);
+}
 
-            <div className="faq-list">
-              {faqs.map((f, i) => (
-                <div key={i} className="faq-item">
-                  <button
-                    className="faq-question"
-                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    aria-expanded={openFaq === i}
-                  >
-                    {f.question}
-                    <span
-                      className={openFaq === i ? "faq-plus open" : "faq-plus"}
-                    >
-                      +
-                    </span>
-                  </button>
-                  {openFaq === i && <p className="faq-answer">{f.answer}</p>}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+.hero-panel-box {
+  margin-top: 26px;
+  padding: 22px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.08);
+}
 
-        <section className="cta-wrap">
-          <div className="cta-box">
-            <div>
-              <h2>Votre moustiquaire sur mesure à Chambéry commence ici</h2>
-              <p>
-                Devis gratuit, prise de mesures à domicile, fabrication sur
-                mesure et pose par nos techniciens. Contactez Caséo Chambéry
-                pour lancer votre projet.
-              </p>
-            </div>
+.hero-panel-box p {
+  margin: 0 0 12px;
+  font-size: 15px;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.92);
+}
 
-            <div className="cta-buttons">
-              <a href={devisUrl} className="btn btn-white">
-                Recevoir mon devis gratuit
-              </a>
-              <a href={phoneLink} className="btn btn-dark-outline">
-                Appeler le showroom
-              </a>
-            </div>
-          </div>
-        </section>
-      </main>
+.hero-panel-box strong {
+  color: white;
+}
 
-      <div className="mobile-sticky-cta">
-        <a href={phoneLink} className="mobile-sticky-btn mobile-call">
-          Appeler
-        </a>
-        <a href={devisUrl} className="mobile-sticky-btn mobile-devis">
-          Devis gratuit
-        </a>
-      </div>
+.hero-panel-box a {
+  color: #ffbf75;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+}
 
-      <footer className="site-footer">
-        <div className="container footer-inner">
-          <span>© 2026 Caséo Chambéry - Menuiserie Diffusion</span>
-          <div className="footer-links">
-            <a href={showroomUrl} target="_blank" rel="noreferrer">
-              Page showroom Caséo Chambéry
-            </a>
-            <a href={devisUrl} target="_blank" rel="noreferrer">
-              Demande de devis Caséo
-            </a>
-            <a
-              href="https://www.caseo-maison.com/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Site officiel Caséo
-            </a>
-          </div>
-        </div>
-      </footer>
-    </>
-  );
+.hero-panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.zone-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.zone-pills span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 13px;
+}
+
+.trust-bar {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: white;
+  padding: 22px 0;
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.trust-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.trust-number {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: var(--orange-light);
+  border: 1px solid rgba(244, 130, 33, 0.2);
+  color: var(--orange-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.trust-item strong {
+  display: block;
+  color: var(--navy);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.trust-item span {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.section {
+  padding: 84px 0;
+}
+
+.section-soft {
+  background: #f5efe7;
+}
+
+.section-dark {
+  background: var(--navy);
+}
+
+.section-tag {
+  margin: 0 0 12px;
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.small-tag {
+  margin-bottom: 10px;
+}
+
+.dark-tag {
+  color: rgba(244, 130, 33, 0.9);
+}
+
+.section h2,
+.cta-box h2 {
+  margin: 0 0 18px;
+  max-width: 880px;
+  color: var(--navy);
+  font-family: var(--font-display);
+  font-size: clamp(34px, 4vw, 54px);
+  line-height: 1.04;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.section-dark h2 {
+  color: white;
+}
+
+.section-text,
+.cta-box p {
+  max-width: 760px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.78;
+}
+
+.dark-text {
+  color: rgba(255, 255, 255, 0.74);
+}
+
+.two-col-block,
+.why-grid,
+.local-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  align-items: start;
+}
+
+.pain-card,
+.why-feature,
+.price-box,
+.review-card,
+.map-card,
+.hours-card,
+.solution-card,
+.reason-card,
+.faq-item,
+.benefit-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+}
+
+.pain-card {
+  padding: 28px;
+  display: grid;
+  gap: 16px;
+}
+
+.pain-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.pain-row span {
+  color: var(--orange);
+  font-size: 26px;
+  line-height: 1;
+}
+
+.pain-row p {
+  margin: 0;
+  color: var(--navy);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.solutions-grid,
+.reasons-grid,
+.benefits-grid,
+.reviews-grid,
+.process-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.solutions-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 34px;
+}
+
+.solution-card {
+  padding: 30px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.solution-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 42px rgba(26, 35, 64, 0.08);
+}
+
+.solution-num,
+.reason-number,
+.process-circle,
+.benefit-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
+.solution-num {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--navy);
+  color: white;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+
+.solution-card h3,
+.reason-card h3,
+.process-step h3,
+.hours-card h3 {
+  margin: 0 0 12px;
+  color: var(--navy);
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+
+.solution-card h3 {
+  font-size: 22px;
+  line-height: 1.15;
+}
+
+.solution-card p,
+.reason-card p,
+.process-step p,
+.benefit-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.72;
+}
+
+.solution-card span {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--orange-light);
+  color: var(--orange-dark);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.benefits-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 34px;
+}
+
+.benefit-card {
+  min-height: 138px;
+  padding: 24px;
+}
+
+.benefit-check {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--orange-light);
+  color: var(--orange-dark);
+  font-size: 15px;
+  margin-bottom: 16px;
+}
+
+.why-text {
+  margin-bottom: 28px;
+}
+
+.why-feature {
+  background: var(--navy);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.08);
+  padding: 30px;
+}
+
+.why-feature-label {
+  color: rgba(244, 130, 33, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.why-feature-title {
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.why-feature p {
+  margin: 14px 0 0;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 15px;
+  line-height: 1.72;
+}
+
+.reasons-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.reason-card {
+  padding: 26px;
+}
+
+.reason-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--orange-light);
+  color: var(--orange-dark);
+  margin-bottom: 14px;
+  font-size: 13px;
+}
+
+.price-box {
+  margin-top: 34px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.price-box strong {
+  display: block;
+  color: var(--navy);
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.price-box p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.72;
+  max-width: 640px;
+}
+
+.process-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 34px;
+}
+
+.process-step {
+  text-align: center;
+}
+
+.process-circle {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid var(--orange);
+  color: var(--orange);
+  font-size: 20px;
+}
+
+.reviews-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+.reviews-badge {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: var(--orange-light);
+  border: 1px solid rgba(244, 130, 33, 0.2);
+}
+
+.reviews-badge strong {
+  color: var(--navy);
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.06;
+  font-weight: 800;
+}
+
+.reviews-badge span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.reviews-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 26px;
+}
+
+.review-card {
+  padding: 28px;
+  box-shadow: 0 14px 40px rgba(26, 35, 64, 0.05);
+}
+
+.review-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.review-top strong {
+  color: var(--navy);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.review-top span {
+  color: var(--orange);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.review-date {
+  margin: 10px 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.review-text {
+  margin: 0 0 18px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.72;
+}
+
+.review-link {
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.review-link:hover {
+  color: var(--orange-dark);
+}
+
+.zones-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.zones-grid span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.zones-grid .zone-main {
+  background: rgba(244, 130, 33, 0.2);
+  border-color: rgba(244, 130, 33, 0.3);
+  color: #ffc080;
+}
+
+.local-grid {
+  margin-top: 34px;
+}
+
+.map-card,
+.hours-card {
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(26, 35, 64, 0.05);
+}
+
+.map-frame {
+  width: 100%;
+  height: 440px;
+  border: 0;
+  display: block;
+}
+
+.map-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.hours-card {
+  padding: 28px;
+}
+
+.hours-head p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.hours-card h3 {
+  font-size: 30px;
+}
+
+.hours-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.hours-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.hours-row:last-child {
+  border-bottom: none;
+}
+
+.hours-row strong {
+  color: var(--navy);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.hours-row span {
+  color: var(--muted);
+  font-size: 15px;
+  text-align: right;
+}
+
+.hours-actions {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.seo-block {
+  padding-top: 8px;
+}
+
+.faq-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.faq-item {
+  overflow: hidden;
+}
+
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 22px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+  color: var(--navy);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.faq-plus {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--orange-light);
+  border: 1px solid rgba(244, 130, 33, 0.2);
+  color: var(--orange);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.faq-plus.open {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  margin: 0;
+  padding: 0 24px 22px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.cta-wrap {
+  padding: 0 24px 100px;
+}
+
+.cta-box {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 52px 48px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 30px;
+  align-items: center;
+}
+
+.cta-box h2 {
+  color: white;
+}
+
+.cta-box p {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 260px;
+}
+
+.mobile-sticky-cta {
+  display: none;
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: white;
+  padding: 28px 0 40px;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+}
+
+.footer-links a {
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: var(--navy);
+}
+
+@media (max-width: 1080px) {
+  .hero-grid,
+  .two-col-block,
+  .why-grid,
+  .local-grid,
+  .cta-box {
+    grid-template-columns: 1fr;
+  }
+
+  .solutions-grid,
+  .benefits-grid,
+  .reviews-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .process-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .price-box {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 860px) {
+  .nav {
+    display: none;
+  }
+
+  .hero {
+    padding-top: 48px;
+  }
+
+  .hero h1 {
+    font-size: clamp(38px, 10vw, 58px);
+  }
+
+  .hero-stats,
+  .trust-grid,
+  .reasons-grid,
+  .benefits-grid,
+  .solutions-grid,
+  .reviews-grid,
+  .process-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-box {
+    padding: 38px 26px;
+  }
+
+  .cta-buttons {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .mobile-sticky-cta {
+    position: sticky;
+    bottom: 0;
+    z-index: 60;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+    background: rgba(250, 250, 248, 0.96);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border);
+  }
+
+  .mobile-sticky-btn {
+    min-height: 52px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  .mobile-call {
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--navy);
+  }
+
+  .mobile-devis {
+    background: var(--orange);
+    color: white;
+    border: 1px solid var(--orange);
+  }
+
+  .site-footer {
+    padding-bottom: 110px;
+  }
+}
+
+@media (max-width: 560px) {
+  .container {
+    padding: 0 18px;
+  }
+
+  .logo-text strong {
+    font-size: 16px;
+  }
+
+  .logo-text span {
+    font-size: 12px;
+  }
+
+  .hero-panel {
+    padding: 24px;
+  }
+
+  .map-frame {
+    height: 320px;
+  }
+
+  .cta-wrap {
+    padding: 0 16px 92px;
+  }
+
+  .hours-card,
+  .review-card,
+  .solution-card,
+  .reason-card,
+  .benefit-card,
+  .pain-card {
+    border-radius: 20px;
+  }
 }
